@@ -1,5 +1,7 @@
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Comparator;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -87,4 +89,36 @@ public class AviaSoulsTest {
 
         assertArrayEquals(new Ticket[]{t2, t1, t3}, result);
     }
+
+    @Test
+    public void testFindAllEmpty() {
+        AviaSouls manager = new AviaSouls();
+        assertEquals(0, manager.findAll().length);
+        }
+
+        @Test
+    public void testFindAllWithOneTicket() {
+        AviaSouls manager = new AviaSouls();
+        Ticket t = new Ticket("MOW", "SPB", 5000, 11, 24);
+
+        manager.add(t);
+
+        assertEquals(1, manager.findAll().length);
+        }
+
+        @Test
+    public void testFindAllWithMultipleTicket() {
+        AviaSouls manager = new AviaSouls();
+        Ticket t1 = new Ticket("MOW", "SPB", 4000, 9,18);
+        Ticket t2 = new Ticket("MVD", "SPB", 8000, 12, 17 );
+
+        manager.add(t1);
+        manager.add(t2);
+
+        assertEquals(2, manager.findAll().length);
+
+        assertTrue(Arrays.asList(manager.findAll()).contains(t1));
+
+        assertTrue(Arrays.asList(manager.findAll()).contains(t2));
+        }
 }
