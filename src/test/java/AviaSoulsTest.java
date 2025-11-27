@@ -121,4 +121,88 @@ public class AviaSoulsTest {
 
         assertTrue(Arrays.asList(manager.findAll()).contains(t2));
         }
+
+        @Test
+    public void testAddOneTicket() {
+        AviaSouls manager = new AviaSouls();
+        Ticket t = new Ticket("MOW", "SPB", 5000, 8, 10);
+
+        manager.add(t);
+
+        assertEquals(1, manager.findAll().length);
+        assertTrue(Arrays.asList(manager.findAll()).contains(t));
+    }
+    @Test
+    public void testAddTwoTickets() {
+        AviaSouls manager = new AviaSouls();
+        Ticket t1 = new Ticket("MOW", "SPB", 5000, 10, 20);
+        Ticket t2 = new Ticket("KUF", "SVX", 8000, 10, 18);
+
+        manager.add(t1);
+        manager.add(t2);
+
+        assertEquals(2, manager.findAll().length);
+        assertTrue(Arrays.asList(manager.findAll()).contains(t1));
+        assertTrue(Arrays.asList(manager.findAll()).contains(t2));
+    }
+
+    @Test
+    public void testDuplicateTicket() {
+        AviaSouls manager = new AviaSouls();
+        Ticket ticket = new Ticket("MOW", "SPB", 5000,10,15);
+
+        manager.add(ticket);
+        manager.add(ticket);
+
+        assertEquals(2, manager.findAll().length);
+    }
+    @Test
+    public void testSearchAndSortByCustomComparator() {
+        AviaSouls manager = new AviaSouls();
+        Ticket t1 = new Ticket("MOW", "SPB", 5000, 10, 15);
+        Ticket t2 = new Ticket("MOW", "SPB", 3000, 10, 13);
+
+
+        manager.add(t1);
+        manager.add(t2);
+
+
+        Comparator<Ticket> customComparator = Comparator.comparingInt(Ticket::getPrice).reversed();
+
+         Ticket[] found = manager.searchAndSortBy("MOW", "SPB", customComparator);
+
+         assertEquals(2, found.length); assertEquals(5000, found[0].getPrice());
+        assertEquals(3000, found[1].getPrice());
+    }
+
+    @Test
+    public void testSearchSortingDefault() {
+        AviaSouls manager = new AviaSouls();
+        Ticket ticket1 = new Ticket("MOW", "SPB", 5000, 10, 18);
+        Ticket ticket2 = new Ticket("MOW", "SPB", 3000, 10,20);
+
+        manager.add(ticket1);
+        manager.add(ticket2);
+
+        Ticket[] found = manager.search("MOW", "SPB");
+
+        assertEquals(2, found.length);
+        assertEquals(3000, found[0].getPrice());
+        assertEquals(5000, found[1].getPrice());
+    }
+
+    @Test
+    public void testSearchInvalidRoute() {
+        AviaSouls manager = new AviaSouls();
+        Ticket t1 = new Ticket("MOW", "SPB", 5000, 10, 14);
+        Ticket t2 = new Ticket("SAM", "EKB", 8000, 10, 18);
+
+        manager.add(t1);
+        manager.add(t2);
+
+        Ticket[] found = manager.search("NOV", "VLD");
+        assertEquals(0, found.length);
+    }
+
+
 }
